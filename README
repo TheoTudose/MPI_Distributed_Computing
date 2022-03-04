@@ -1,0 +1,44 @@
+Tudose Theodor-Mihai 
+331CAb
+
+Implementarea este facuta, de la inceput, pentru a satisface cerinta de la partea
+a treia ( astfel incat sa nu existe legatura dintre leaderul 0 si leaderul 1).
+
+Partea intai:
+
+Pentru inceput, folosesc functia read_cluster pentru a ma asigura ca fiecare leader
+citeste din propriul fisier si pentru a popula vectorul workers, cu workerii specifici
+fiecarui cluster. In continuare, folosesc functia leader_send pentru a trimite
+leader-ul specific fiecarui worker. 
+In continuare, leaderul 0 populeaza vectorul topology (populat initial cu -2),
+in modul cum urmeaza: la pozitia rank de worker, se trece worker-ul specific
+leader-ului 0, iar la pozitia rank de leader se trece -1.
+In continuare, vectorul topology este trimis catre leaderul 2, care-l primeste,
+isi populeaza si el, la randul sau vectorul topology, dupa modul descris mai sus si
+il trimite catre leaderul 1.
+Leader-ul termina de populat vectorul topology si il trimite in clusterul propriu
+si inapoi la 2.
+Leaderul 2 trimite topologia finala la clusterul propriu si inapoi la 0.
+Leader-ul 0 trimite topologia finala la clusterul propiu.
+Cand primesc clusterul, fiecare proces il afiseaza folosind functia print_topo.
+
+Partea a doua:
+
+Leaderul 0 populeaza vectorul V.
+Leaderul 0 calculeaza ce parte din vector trebuie sa trimita celorlalti 2 leaderi
+si propriilor workeri.
+Leaderul 0 trimite propriilor workeri bucata calculata,
+urmand ca acestia sa efectueze calculele si sa trimita bucata respectiva inapoi,
+pentru a reconstrui vectorul.
+Leaderul 0 trimite catre leaderul 2 bucatile de vector pentru leaderul 2 si leaderul 1.
+Leaderul 2 isi imparte propria bucata de vector, catre proprii workeri si o reintregeste dupa efectuarea calculelor.
+Leaderul 2 trimite catre leaderul 1 bucata vector pentru leaderul 1.
+Leaderul 1 imparte bucata de vector la workeri si o primeste inapoi dupa efectuarea
+calculelor.
+Leaderul 1 trimite bucata de vector reintregita catre leaderul 2.
+Leaderul 2 trimite bucata de vector proprie si bucata de vector primita de la
+leaderul 1, inapoi catre leaderul 0, care reface vectorul V si-l afiseaza.
+
+Partea a treia :
+
+Implementata in celelalte doua parti. 
